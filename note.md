@@ -47,3 +47,46 @@
    2. 原因是会把set异步执行提升性能
 4. 循环数组需要把key加在循环体最外层
 
+## PropTypes
+1. propTypes: check the type of prop value
+2. defaultProps: default value
+
+## Props, state & render
+1. 当组件的state或者props发生改变的时候，render函数会重新执行
+2. 当父组件的render函数被执行时，他的所有子组件都会被重新执行
+
+## React 使用虚拟DOM创建/修改web逻辑
+1. state 数据
+2. JSX 模版
+3. 数据 + 模版 生成虚拟DOM(虚拟DOM就是一个js对象，用它来描述真实dom)
+   * DOM: Document object model
+   * 损耗性能但是极少：js创建js对象消耗小，但是创建/比对dom相关会需要调用web application api，消耗极大
+   * ['div', {id:'abc'}, ['span', {}, 'hello world']]   
+4. 使用虚拟DOM生成真实的DOM显示web
+   * <div id='abc'><span>hello world</span></div>
+5. state 发生改变
+6. 数据 + 模版 生成新的虚拟DOM
+   * 由于不用生成新的真实dom, 极大提升性能
+   * ['div', {id:'abc'}, ['span', {}, 'bye bye']]
+7. 比较原始和新的虚拟DOM，找到区别为span中的内容
+   * 由于不用比较两个真实DOM, 极大提升性能
+8. 直接操作DOM, 改变span中的内容
+
+## JSX转换为真实DOM流程
+* JSX -> createElement -> 虚拟DOM (JS对象) -> 真实DOM
+* 使用createElement改写JSX
+  * return <div><span>item</span></div>
+  * return React.createElement('div', {}, React.createElement('span', {}, 'item'))
+* 和Vue使用虚拟DOM方式几乎一样
+
+## 使用虚拟DOM优点
+1. 性能提升
+2. 使得跨端应用得以实现：React Native
+   * 真实DOM无法被安卓等移动端识别，但是虚拟DOM可以both被网页和原生应用识别
+
+## 虚拟DOM中的diff算法
+1. 可以把多次setStates合并为一次来提升速度
+2. 同层比对，如果上层不一致则停止比对
+3. 通过key来提升比对性能
+   * 不要使用index作为key，因为index会发生改变
+   * 使用稳定内容作为key值

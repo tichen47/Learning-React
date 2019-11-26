@@ -9,12 +9,13 @@ class TodoItem extends Component {
 	}
 
   render() {
-		const { content, test } = this.props;
+	const { content, test } = this.props;
+	// JSX -> JS 对象 -> 真实的DOM
   	return (
-			<div onClick={this.handleClick}>
-  				{test} - {content}
-			</div>
-		)
+		<div onClick={this.handleClick}>
+			{test} - {content}
+		</div>
+	)
   }
 
   handleClick() {
@@ -26,7 +27,7 @@ class TodoItem extends Component {
 // Constrain prop type, isRequired make the value non-empty
 TodoItem.propTypes = {
 	test: PropTypes.string.isRequired,
-	content: PropTypes.string,
+	content: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 	deleteItem: PropTypes.func,
 	index: PropTypes.number,
 }

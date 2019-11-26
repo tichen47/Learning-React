@@ -6,6 +6,7 @@ class TodoList extends Component {
 
   constructor(props) {
     super(props);
+    // 当组件的state或者props发生改变时，render函数会重新执行
     this.state = {
       inputValue: '',
       list: ['Learn English', 'Do Leetcode']
@@ -25,10 +26,11 @@ class TodoList extends Component {
             className='input'
             value={this.state.inputValue}
             onChange={this.handleInputChange}
+            ref={(input) => {this.input = input}}
           />
           <button onClick={this.handleBtnClick}>submit</button>
         </div>
-        <ul>
+        <ul ref={(ul) => {this.ul = ul}}>
           {this.getTodoItem()}
         </ul>
       </Fragment>
@@ -39,7 +41,7 @@ class TodoList extends Component {
     return this.state.list.map((item, index) =>  {
       return (
         <TodoItem
-          key={index} 
+          key={item} 
           content={item} 
           index={index}
           deleteItem={this.handleItemDelete}
@@ -48,8 +50,8 @@ class TodoList extends Component {
     })
   }
 
-  handleInputChange(e) {
-    const value = e.target.value;
+  handleInputChange() {
+    const value = this.input.value;
     this.setState(() => ({
       inputValue: value
     }));
@@ -59,7 +61,9 @@ class TodoList extends Component {
     this.setState((prevState) => ({
       list: [...prevState.list, prevState.inputValue],      // ...this.state.list 展开之前数组
       inputValue: '' 
-    }));
+    }), () => {
+      console.log(this.ul.querySelectorAll('div').length);
+    });
   }
 
   handleItemDelete(index) {
